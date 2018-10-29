@@ -17,6 +17,9 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 public class GmailAppTest {
+    private static final String TEST_DATA_ADDRESS_TO = "andriy27111995@gmail.com";
+    private static final String TEST_DATA_SUBJECT = "test subject";
+    private static final String TEST_DATA_MESSAGE = "test message";
 
     private AppiumDriver<MobileElement> driver;
     private GmailBO gmailBO;
@@ -31,11 +34,7 @@ public class GmailAppTest {
     public void shouldAnswerWithTrue() {
         gmailBO.navigateToConversationListActivity();
         gmailBO.navigateToSendEmailActivity();
-        gmailBO.fillSendFieldsAndSendEmail("andriy27111995@gmail.com", "test subject", "test message");
-        Assert.assertTrue(gmailBO.isEmailReceived("test"));
-//        MobileElement element = driver.findElement(By.xpath("//*[@resource-id='com.google.android.gm:id/thread_list_view']/android.view.View[1]"));
-//        element.click();
-//        element = driver.findElement(By.id("com.google.android.gm:id/subject_and_folder_view"));
-//        Assert.assertTrue(element.getText().contains("test"));
+        gmailBO.fillSendFieldsAndSendEmail(TEST_DATA_ADDRESS_TO, TEST_DATA_SUBJECT, TEST_DATA_MESSAGE);
+        Assert.assertTrue(gmailBO.isEmailReceived(TEST_DATA_SUBJECT));
     }
 }

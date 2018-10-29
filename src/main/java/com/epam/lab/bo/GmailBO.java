@@ -4,8 +4,11 @@ import com.epam.lab.po.GmailHomePO;
 import com.epam.lab.po.GmailSendPO;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class GmailBO {
+    private static final Logger LOG = LogManager.getLogger(GmailBO.class);
 
     private AppiumDriver<MobileElement> driver;
 
@@ -18,28 +21,29 @@ public class GmailBO {
     }
 
     public void navigateToConversationListActivity() {
+        LOG.info("Navigate to conversation list activity");
         gmailHomePO.clickWelcomeGotItBtn();
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         gmailHomePO.clickActionDoneBtn();
     }
 
     public void navigateToSendEmailActivity() {
+        LOG.info("Navigate to send email activity");
         gmailHomePO.clickComposeBtn();
         gmailSendPO = new GmailSendPO(driver);
     }
 
     public void fillSendFieldsAndSendEmail(String to, String subject, String message) {
+        LOG.info("Fill fields for sending email");
         gmailSendPO.fillSubjectInputElement(subject);
         gmailSendPO.fillMessageInputElement(message);
         gmailSendPO.fillToInputElement(to);
         gmailSendPO.clickSendBtnElement();
     }
 
-    public boolean isEmailReceived(String partialSubject) {
-        return gmailHomePO.isReceivedEmailDisplayed(partialSubject);
+    public boolean isEmailReceived(String subject) {
+        LOG.info("Checking for receiving email");
+        gmailHomePO.clickReceivedEmail();
+        String receivedEmailSubject = gmailHomePO.getReceivedEmailSubject();
+        return receivedEmailSubject.contains(subject);
     }
 }
